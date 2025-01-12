@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # SecretFinder - Tool for discover apikeys/accesstokens and sensitive data in js file
-# based on LinkFinder - github.com/GerbenJavado
-# By m4ll0k (@m4ll0k2) github.com/m4ll0k
+#
 
 
 import os,sys
@@ -75,6 +74,62 @@ _regex = {
                     r"password is\s*[`=:\"]*\s*[^\s]+|" \
                     r"pwd\s*[`=:\"]*\s*[^\s]+|" \
                     r"passwd\s*[`=:\"]+\s*[^\s]+)",
+    'slack_oauth_token': r'xoxp-[0-9a-zA-Z]{10,40}',
+    'slack_bot_token': r'xoxb-[0-9a-zA-Z]{10,40}',
+    'discord_bot_token': r'Bot [0-9a-zA-Z]{24}\.[0-9a-zA-Z]{6}\.[0-9a-zA-Z_-]{27}',
+    'firebase_api_key': r'AIza[0-9A-Za-z]{39}',
+    'gitlab_api_token': r'[a-zA-Z0-9]{20}\.[a-zA-Z0-9]{40}',
+    'heroku_api_key': r'[\w]{64}',
+    'zoom_api_key': r'[\w-]{32}',
+    'auth0_api_key': r'[\w-]{32}',
+    'box_api_key': r'[\w-]{48}',
+    'twitch_oauth_token': r'oauth:[0-9a-zA-Z]{30}',
+    'twitter_api_key': r'[\w]{25}-[\w]{30}',
+    'paypal_api_key': r'AX[0-9a-zA-Z]{14}-[0-9a-zA-Z]{22}',
+    'mongodb_connection_string': r'mongodb\+srv:\/\/([a-zA-Z0-9-]+\:[a-zA-Z0-9-]+@)?[a-zA-Z0-9-]+\.mongodb\.net',
+    'redis_password': r'^[a-fA-F0-9]{64}$',
+    'mongodb_password': r'^[a-zA-Z0-9!@#$%^&*\(\)]{8,32}$',
+    'digitalocean_api_key': r'[0-9a-fA-F]{32}',
+        'cloudflare_api_key': r'[\dA-Za-z]{32}',
+    
+    # Apple API Key
+    'apple_api_key': r'[-A-Za-z0-9]{20,40}\\.api\\.apple\\.com',
+    
+    # Azure Active Directory token
+    'azure_ad_token': r'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.eyJhdWQiOiI[0-9A-Za-z\-_]{50,100}',
+    
+    # Kubernetes token
+    'k8s_token': r'eyJhbGciOiJSUzI1NiIsImtpZCI6IjdiMmEyMzQ1YzMzNTMzN2NkNTI3MjQyZTEzNzBkN2U4N2U3NjNhZTBhMTMyNzA3ZmFlMjYyZmQwMTMwZDZkZmFkM2VhMmFhZGQ5ZWIyZDZkZDEzMmE0NTNkZDIyMjM1N2UyZmVhYTRl',
+    
+    # AWS Lambda key
+    'aws_lambda_key': r'arn:aws:lambda:[a-z]{2}-[a-z]+-[0-9]{1}:[0-9]{12}:function:[\w\-]+',
+    'mysql_username': r'(?<=user=)[A-Za-z0-9_-]+',  # Extracts MySQL username from connection strings
+    'mysql_password': r'(?<=password=)[A-Za-z0-9!@#$%^&*\(\)_\+=-]+',  # Extracts MySQL password
+    'mysql_connection_string': r'mysql:\/\/(?:[A-Za-z0-9_-]+:[A-Za-z0-9!@#$%^&*\(\)_\+=-]+@)?(?:[A-Za-z0-9\._-]+)(?::\d+)?\/[A-Za-z0-9_-]+',  # MySQL connection string pattern
+    'postgres_username': r'(?<=user=)[A-Za-z0-9_-]+',  # Extracts PostgreSQL username
+    'postgres_password': r'(?<=password=)[A-Za-z0-9!@#$%^&*\(\)_\+=-]+',  # Extracts PostgreSQL password
+    'postgres_connection_string': r'postgres:\/\/(?:[A-Za-z0-9_-]+:[A-Za-z0-9!@#$%^&*\(\)_\+=-]+@)?(?:[A-Za-z0-9\._-]+)(?::\d+)?\/[A-Za-z0-9_-]+',  # PostgreSQL connection string pattern
+    'sqlite_connection_string': r'sqlite:\/\/([A-Za-z0-9_\-\/]+)',  # SQLite connection string
+    'mongodb_connection_string': r'mongodb\+srv:\/\/([a-zA-Z0-9-]+\:[a-zA-Z0-9-]+@)?[a-zA-Z0-9-]+\.mongodb\.net',  # MongoDB connection string
+    'mongodb_password': r'(?<=password=)[A-Za-z0-9!@#$%^&*\(\)_\+=-]+',  # MongoDB password
+    'oracle_username': r'(?<=user=)[A-Za-z0-9_-]+',  # Extracts Oracle username
+    'oracle_password': r'(?<=password=)[A-Za-z0-9!@#$%^&*\(\)_\+=-]+',  # Extracts Oracle password
+    'oracle_connection_string': r'oracle:\/\/(?:[A-Za-z0-9_-]+:[A-Za-z0-9!@#$%^&*\(\)_\+=-]+@)?(?:[A-Za-z0-9\._-]+)(?::\d+)?\/[A-Za-z0-9_-]+',  # Oracle connection string pattern
+    'sqlserver_username': r'(?<=user id=)[A-Za-z0-9_-]+',  # SQL Server username
+    'sqlserver_password': r'(?<=password=)[A-Za-z0-9!@#$%^&*\(\)_\+=-]+',  # SQL Server password
+    'sqlserver_connection_string': r'sqlsrv:\/\/(?:[A-Za-z0-9_-]+:[A-Za-z0-9!@#$%^&*\(\)_\+=-]+@)?(?:[A-Za-z0-9\._-]+)(?::\d+)?\/[A-Za-z0-9_-]+',  # SQL Server connection string pattern
+    'mssql_username': r'(?<=user id=)[A-Za-z0-9_-]+',  # Extracts MSSQL username
+    'mssql_password': r'(?<=password=)[A-Za-z0-9!@#$%^&*\(\)_\+=-]+',  # Extracts MSSQL password
+    'mssql_connection_string': r'mssql:\/\/(?:[A-Za-z0-9_-]+:[A-Za-z0-9!@#$%^&*\(\)_\+=-]+@)?(?:[A-Za-z0-9\._-]+)(?::\d+)?\/[A-Za-z0-9_-]+',  # MSSQL connection string pattern
+    'db2_username': r'(?<=user=)[A-Za-z0-9_-]+',  # DB2 username
+    'db2_password': r'(?<=password=)[A-Za-z0-9!@#$%^&*\(\)_\+=-]+',  # DB2 password
+    'db2_connection_string': r'jdbc:db2:\/\/(?:[A-Za-z0-9_-]+:[A-Za-z0-9!@#$%^&*\(\)_\+=-]+@)?(?:[A-Za-z0-9\._-]+)(?::\d+)?\/[A-Za-z0-9_-]+',  # DB2 connection string pattern
+    'redis_password': r'^[a-fA-F0-9]{64}$',  # Redis password (hex format)
+    'redis_connection_string': r'redis:\/\/(?:[A-Za-z0-9_-]+:[A-Za-z0-9!@#$%^&*\(\)_\+=-]+@)?(?:[A-Za-z0-9\._-]+)(?::\d+)?',  # Redis connection string
+    'cassandra_connection_string': r'cassandra:\/\/(?:[A-Za-z0-9_-]+:[A-Za-z0-9!@#$%^&*\(\)_\+=-]+@)?(?:[A-Za-z0-9\._-]+)(?::\d+)?\/[A-Za-z0-9_-]+',  # Cassandra connection string
+    'mongodb_password': r'(?<=password=)[A-Za-z0-9!@#$%^&*\(\)_\+=-]+',  # MongoDB password
+    'firebase_database_url': r'https:\/\/[a-zA-Z0-9-]+\.firebaseio\.com',  # Firebase database URL
+    'firebase_auth_key': r'AIza[0-9A-Za-z]{39}',  # Firebase API key
 }
 
 _template = '''
